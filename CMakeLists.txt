@@ -11,6 +11,8 @@ set(src_list
 
 find_package(helib REQUIRED)
 
+#add /usr/lib/libaudiofile.so
+find_library(AUDIOFILE_LIB audiofile)
 set(Boost_USE_STATIC_LIBS OFF) 
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
@@ -22,7 +24,8 @@ message(STATUS "src_list: ${src_list}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_library(${project_name} STATIC ${src_list})
-target_link_libraries(${project_name} helib ${Boost_LIBRARIES})
+target_link_libraries(${project_name} helib audiofile ${Boost_LIBRARIES})
 
 add_executable(${project_name}_exe src/main.cpp)
-target_link_libraries(${project_name}_exe ${project_name} helib ${Boost_LIBRARIES})
+target_link_libraries(${project_name}_exe ${project_name}  ${Boost_LIBRARIES})
+

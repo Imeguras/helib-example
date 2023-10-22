@@ -6,18 +6,42 @@
 #include <iostream>
 #include <audiofile.h>
 #include <istream>
+#include <cstring>
+#include <string>
+#include <audiofile.h>
+#include <cstddef>
+#include <cstring>
 
 #ifndef AUDIO_EXTRACT_HPP__
 #define AUDIO_EXTRACT_HPP__
 
-typedef union {
-	char unserialized[4];
-	unsigned long serialized;
-} extension_cast;
+ enum extension_cast{
+	__wav = 0x766177,
+	__WAV = 0x564157,
+	__MP3 = 0x4d5033,
+	__mp3 = 0x6d7033
+};
+class audio_ether{
+	public:
+		audio_ether(std::string address);
+		~audio_ether();
+		void extract_data();
+		void extract_wav_data();
+		void extract_mp3_data();
+		void amplify_data(std::string _data);
+		std::string get_data();
+		void data_toWAV(); 
+	private:
+		std::string address;
+		std::string data;
+		extension_cast ext;
+		int track;
+		int frames;
+		float frame_size;
+		int frames_read;
+		int channels;
+		int fileHandle;
 
-#define __WAV()(extension_cast{.serialized = 0x57415600}.serialized)
-#define __MP3()(extension_cast{.serialized = 0x4D503300}.serialized)
-std::iostream extract_data(std::string address);
-std::iostream extract_wav_data(std::string address);
-std::iostream extract_mp3_data(std::string address);
+}; 
+
 #endif
